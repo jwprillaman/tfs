@@ -5,14 +5,15 @@ import sys
 TRACKER = "udp://open.demonii.com:1337"
 TOR_DIR = "/var/lib/transmission-daemon/downloads"
 
-if len(sys.argv) != 3:
-  print("Usage: tfs [-save|-get] [directory |file] [password]") 
+print(len(sys.argv))
+if (len(sys.argv) != 3) and (len(sys.argv) != 4):
+  print("Usage: tfs [-save [password] |-get [file] [password]]") 
   exit()
 
+workDir = os.path.dirname(os.path.abspath(__file__))
 #Saves encrypted home directory to torrent file
 def save( saveFile ):
   #working dir of the program
-  workDir = os.path.dirname(os.path.abspath(__file__))
   #zips up ./home dir and encrypts with given password. Saves to ./temp
   os.system("zip -e -P " + sys.argv[2] + " " +  workDir + "/downloads/" + "homeZip " + "-r "  +workDir + "/home") 
   #creats torrent file using TRACKER saves to temp
@@ -21,14 +22,18 @@ def save( saveFile ):
   os.system("transmission-remote --add " + workDir + "/downloads/homeTor.torrent")
 
 def get( getFiles ):
-  print('get')
-
-
+  #copy given torrent file to download directory
+  os.system("cp " + getFiles + " " + workDir + "/downloads/homeTorDownload.torrent")
+  #download torrent file
+  os.system("transmission-cli -w " + workDir + "/temp/")
+  while not os.path.isfile(workDir + "/temp/homeZip.zip"):
+      print("file not done")
 
 if sys.argv[1] == '-save':
   print('save')
   save('file')
 elif sys.argv[1] == '-get':
   print('get')
+  get(sys.argv[2])
 
 
