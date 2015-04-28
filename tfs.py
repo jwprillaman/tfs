@@ -15,9 +15,10 @@ workDir = os.path.dirname(os.path.abspath(__file__))
 def save( saveFile ):
   #working dir of the program
   #zips up ./home dir and encrypts with given password. Saves to ./temp
-  os.system("zip -e -P " + sys.argv[2] + " " +  workDir + "/downloads/" + "homeZip " + "-r "  +workDir + "/home") 
+  #os.system("zip -e -P " + sys.argv[2] + " " +  workDir + "/downloads/" + "homeZip " + "-r "  +workDir + "/home") 
+  os.system("7z a -t7z -p" + sys.argv[2] + " " + workDir + "/downloads/homeZip " + workDir + "/home")
   #creats torrent file using TRACKER saves to temp
-  os.system("transmission-create -o " + workDir + "/downloads/homeTor.torrent " + "-t " + TRACKER + " " + workDir + "/downloads/homeZip.zip")
+  os.system("transmission-create -o " + workDir + "/downloads/homeTor.torrent " + "-t " + TRACKER + " " + workDir + "/downloads/homeZip.7z")
   #Add torrent to transmission for seeding
   os.system("transmission-remote --add " + workDir + "/downloads/homeTor.torrent")
 
@@ -25,10 +26,8 @@ def get( getFiles ):
   #copy given torrent file to download directory
   os.system("cp " + getFiles + " " + workDir + "/downloads/homeTorDownload.torrent")
   #download torrent file
-  os.system("transmission-cli -w " + workDir + "/temp/")
-  while not os.path.isfile(workDir + "/temp/homeZip.zip"):
-      print("file not done")
-
+  os.system("7z x -p" + sys.argv[3] + " " + workingDir + "/home/" + getFiles)
+  
 if sys.argv[1] == '-save':
   print('save')
   save('file')
