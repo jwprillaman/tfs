@@ -24,15 +24,23 @@ def save( saveFile ):
 
 def get( getFiles ):
   #copy given torrent file to download directory
-  os.system("cp " + getFiles + " " + workDir + "/downloads/homeTorDownload.torrent")
+  os.system("cp " + getFiles + " " + workDir + "/downloads/")
   #download torrent file
-  os.system("7z x -p" + sys.argv[3] + " " + workingDir + "/home/" + getFiles)
-  
+  os.system("aria2c " + workDir + "/downloads/homeTor.torrent -d " + workDir + "/downloads/ --on-bt-download-complete=" + workDir + "/done.sh")
+  # " + "> " + workDir + "/log.txt 2>&1 &")
+
+def done(password ):
+  print("pass: " + password)
+  #os.system("7z x -p" + password + " -o" + workDir + "/home/ " + workDir + "/downloads/homeZip.7z")
+  print("Finished")
+
 if sys.argv[1] == '-save':
   print('save')
   save('file')
 elif sys.argv[1] == '-get':
   print('get')
   get(sys.argv[2])
-
+elif sys.argv[1] == '-done':
+  print('Inflating')
+  done(sys.argv[2])
 
