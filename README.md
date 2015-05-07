@@ -27,6 +27,27 @@ unzip
 sudo apt-get install unzip
 
 ```
+7zip
+```
+sudo apt-get install p7zip-full
+```
+##Configuration
+
+edit /etc/transmission-daemon/settings.json
+
+Set Download directory to the download directy of the tfs folder
+```
+"download-dir":"/home/myUser/tfs/downloads"
+```
+Also remove the rpc authentication
+```
+"rpc-authentication-required":"false"
+```
+
+Then reload the daemon
+```
+sudo services transmission-daemon reload
+```
 
 ##Usage
 
