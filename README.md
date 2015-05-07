@@ -51,8 +51,19 @@ sudo services transmission-daemon reload
 
 ##Usage
 
+To save and seed your home dir:
 ```
-python tfs.py -save [password]
+python tfs.py -save password
 
 ```
-Save current working directory of tfs/home to zip file and encrypt with given password. creates torrent for Home directory in tfs/downloads
+where password is the user created encryption password. Please keep this in a safe location as you will need it to access your tfs.
+
+The torrent file ,homeTor.torrent, to access your tfs is located in the downloads directory in the tfs file structure.
+
+To get your seeded home dir:
+```
+python tfs.py -get torrentFile password
+```
+where torrentFile is the torrent file returned from the -save command and password is the password used to encrypt in the -save command.
+
+
